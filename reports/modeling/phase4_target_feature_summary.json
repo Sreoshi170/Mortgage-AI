@@ -1,0 +1,127 @@
+{
+  "columns_inspected": [
+    "activity_year",
+    "lei",
+    "state_code",
+    "county_code",
+    "conforming_loan_limit",
+    "derived_loan_product_type",
+    "derived_dwelling_category",
+    "action_taken",
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "combined_loan_to_value_ratio",
+    "interest_rate",
+    "rate_spread",
+    "property_value",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio",
+    "loan_amount_numeric",
+    "combined_loan_to_value_ratio_numeric",
+    "interest_rate_numeric",
+    "rate_spread_numeric",
+    "property_value_numeric",
+    "income_numeric"
+  ],
+  "complete_scan": true,
+  "eligible_feature_status_counts": {
+    "combined_loan_to_value_ratio": {
+      "numeric": 7997070,
+      "special": 956197
+    },
+    "debt_to_income_ratio": {
+      "numeric": 3775321,
+      "special": 5177946
+    },
+    "income": {
+      "numeric": 8250529,
+      "out_of_range": 7489,
+      "special": 695249
+    },
+    "loan_amount": {
+      "numeric": 8953267
+    },
+    "loan_purpose": {
+      "categorical": 8953267
+    },
+    "loan_type": {
+      "categorical": 8953267
+    },
+    "occupancy_type": {
+      "categorical": 8953267
+    },
+    "property_value": {
+      "numeric": 8337556,
+      "special": 615711
+    }
+  },
+  "input_path": "data\\processed\\hmda_precheck_typed_v1.csv",
+  "limitations": [
+    "This report is a design audit; it does not fit or evaluate a model.",
+    "Raw LEI values are used only in memory for grouping and are not written to the report.",
+    "No application-level identifier is available, so cross-institution related records cannot be fully detected."
+  ],
+  "proposed_features": [
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "property_value",
+    "combined_loan_to_value_ratio",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio"
+  ],
+  "rows_inspected": 13558306,
+  "spec_version": "phase4-action13-logistic-v1",
+  "split": {
+    "distinct_groups_by_split": {
+      "test": 776,
+      "train": 3322,
+      "validation": 689
+    },
+    "eligible_rows_by_split": {
+      "test": 1322600,
+      "train": 6086047,
+      "validation": 1544620
+    },
+    "group_column": "lei",
+    "ratios": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "seed": "phase4-action13-v1",
+    "strategy": "deterministic_institution_group_holdout"
+  },
+  "target": {
+    "action_code_counts": {
+      "1": 6837512,
+      "2": 420181,
+      "3": 2115755,
+      "4": 1713082,
+      "5": 695182,
+      "6": 1578065,
+      "7": 50499,
+      "8": 148030
+    },
+    "column": "action_taken",
+    "eligible_rows": 8953267,
+    "excluded_action_code_counts": {
+      "2": 420181,
+      "4": 1713082,
+      "5": 695182,
+      "6": 1578065,
+      "7": 50499,
+      "8": 148030
+    },
+    "excluded_rows": 4605039,
+    "negative_code": "3",
+    "negative_rows": 2115755,
+    "positive_code": "1",
+    "positive_prevalence": 0.7636890533924655,
+    "positive_rows": 6837512
+  },
+  "training_performed": false
+}

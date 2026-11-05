@@ -1,0 +1,6 @@
+SYNTHETIC EMPLOYMENT VERIFICATION
+Loan Amount: 250000
+Annual Income: 1200000
+Loan Type: conventional
+Debt-to-Income Ratio: 38%
+This document is synthetic and is used only for automated testing.

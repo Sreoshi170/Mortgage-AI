@@ -1,0 +1,218 @@
+{
+  "chunks": 272,
+  "columns": [
+    "activity_year",
+    "lei",
+    "state_code",
+    "county_code",
+    "conforming_loan_limit",
+    "derived_loan_product_type",
+    "derived_dwelling_category",
+    "action_taken",
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "combined_loan_to_value_ratio",
+    "interest_rate",
+    "rate_spread",
+    "property_value",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio",
+    "loan_amount_numeric",
+    "combined_loan_to_value_ratio_numeric",
+    "interest_rate_numeric",
+    "rate_spread_numeric",
+    "property_value_numeric",
+    "income_numeric"
+  ],
+  "delimiter": ",",
+  "empty_input": false,
+  "excluded_leakage_or_post_outcome_fields": [
+    "action_taken",
+    "denial_reason_1",
+    "denial_reason_2",
+    "denial_reason_3",
+    "denial_reason_4",
+    "derived_dwelling_category",
+    "derived_loan_product_type",
+    "interest_rate",
+    "rate_spread"
+  ],
+  "excluded_protected_or_proxy_fields": [
+    "ageapplicant",
+    "applicant_age",
+    "applicant_ethnicity_1",
+    "applicant_race_1",
+    "applicant_sex",
+    "census_tract",
+    "co_applicant_age",
+    "co_applicant_ethnicity_1",
+    "co_applicant_race_1",
+    "co_applicant_sex",
+    "county_code",
+    "derived_ethnicity",
+    "derived_msa_md",
+    "derived_race",
+    "derived_sex",
+    "lei",
+    "state_code"
+  ],
+  "field_quality": {
+    "combined_loan_to_value_ratio": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.37150467027370526
+      },
+      "rows": 13558306,
+      "special": 5036974,
+      "special_values": {
+        "Exempt": 317276,
+        "NA": 4719698
+      }
+    },
+    "debt_to_income_ratio": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.7014186728046999
+      },
+      "rows": 13558306,
+      "special": 9510049,
+      "special_values": {
+        "20%-<30%": 1190216,
+        "30%-<36%": 1192505,
+        "50%-60%": 852993,
+        "<20%": 515528,
+        ">60%": 611384,
+        "Exempt": 316800,
+        "NA": 4830623
+      }
+    },
+    "income": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 8091,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0005967559664164535,
+        "special": 0.16152814370762839
+      },
+      "rows": 13558306,
+      "special": 2190048,
+      "special_values": {
+        "NA": 2190048
+      }
+    },
+    "interest_rate": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 1,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 7.37555266860034e-08,
+        "special": 0.3583129780372268
+      },
+      "rows": 13558306,
+      "special": 4858117,
+      "special_values": {
+        "Exempt": 317385,
+        "NA": 4540732
+      }
+    },
+    "loan_amount": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.0
+      },
+      "rows": 13558306,
+      "special": 0,
+      "special_values": {}
+    },
+    "property_value": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.22953700853189182
+      },
+      "rows": 13558306,
+      "special": 3112133,
+      "special_values": {
+        "Exempt": 318257,
+        "NA": 2793876
+      }
+    },
+    "rate_spread": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.5268024633755869
+      },
+      "rows": 13558306,
+      "special": 7142549,
+      "special_values": {
+        "Exempt": 317742,
+        "NA": 6824807
+      }
+    }
+  },
+  "input_path": "data\\processed\\hmda_precheck_typed_v1.csv",
+  "notes": [
+    "Source values are never overwritten or normalized in place.",
+    "Income is preserved in the HMDA-reported unit: thousands of dollars; no conversion is applied.",
+    "action_taken is preserved as an eight-code candidate outcome and is excluded from operational features.",
+    "Reported combined_loan_to_value_ratio is preserved; no loan_amount/property_value ratio is substituted.",
+    "Rows with invalid width raise RowWidthError rather than being silently dropped."
+  ],
+  "operational_feature_allowlist": [
+    "activity_year",
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "property_value",
+    "combined_loan_to_value_ratio",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio"
+  ],
+  "required_columns": [
+    "action_taken",
+    "activity_year",
+    "combined_loan_to_value_ratio",
+    "debt_to_income_ratio",
+    "income",
+    "interest_rate",
+    "loan_amount",
+    "loan_purpose",
+    "loan_type",
+    "occupancy_type",
+    "property_value",
+    "rate_spread"
+  ],
+  "row_width_errors": 0,
+  "rows_inspected": 13558306
+}

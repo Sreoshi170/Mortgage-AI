@@ -1,0 +1,86 @@
+{
+  "suite": "synthetic-document-regressions-v1",
+  "contains_real_borrower_information": false,
+  "cases": [
+    {
+      "id": "CASE01",
+      "file": "CASE01_baseline.pdf",
+      "media_type": "application/pdf",
+      "expected_extracted_values": {
+        "loan_amount": 180000,
+        "annual_income": 84000,
+        "monthly_debt_obligations": 950,
+        "debt_to_income_ratio": 31.5,
+        "property_value": 210000,
+        "loan_type": "fha",
+        "loan_purpose": "purchase",
+        "occupancy_type": "primary_residence"
+      },
+      "expected_missing_fields": [],
+      "expected_conflicts": ["loan_amount", "annual_income", "monthly_debt_obligations", "debt_to_income_ratio", "property_value", "loan_type"],
+      "expected_confidence": 0.9,
+      "expected_review_status": "required"
+    },
+    {
+      "id": "CLEAN_PDF",
+      "file": "synthetic_clean_loan_application_demo.pdf",
+      "media_type": "application/pdf",
+      "expected_extracted_values": {
+        "loan_amount": 250000,
+        "annual_income": 120000,
+        "monthly_debt_obligations": 1800,
+        "debt_to_income_ratio": 30,
+        "property_value": 325000,
+        "loan_type": "conventional",
+        "loan_purpose": "purchase",
+        "property_type": "single_family",
+        "property_units": 1,
+        "occupancy_type": "primary_residence"
+      },
+      "expected_missing_fields": [],
+      "expected_conflicts": [],
+      "expected_confidence": 0.9,
+      "expected_review_status": "required_application_dti_inconsistent"
+    },
+    {
+      "id": "MISSING_PROPERTY_VALUE",
+      "file": "missing_property_value.pdf",
+      "media_type": "application/pdf",
+      "expected_extracted_values": {"loan_amount": 250000, "annual_income": 120000, "monthly_debt_obligations": 1800, "loan_type": "conventional"},
+      "expected_missing_fields": ["property_value"],
+      "expected_conflicts": [],
+      "expected_confidence": 0.9,
+      "expected_review_status": "required"
+    },
+    {
+      "id": "LOW_QUALITY_SCANNED",
+      "file": "low_quality_scanned_no_text.pdf",
+      "media_type": "application/pdf",
+      "expected_extracted_values": {},
+      "expected_missing_fields": [],
+      "expected_conflicts": [],
+      "expected_confidence": null,
+      "expected_review_status": "rejected_document_text_empty"
+    },
+    {
+      "id": "CORRUPT_PDF",
+      "file": "corrupted.pdf",
+      "media_type": "application/pdf",
+      "expected_extracted_values": {},
+      "expected_missing_fields": [],
+      "expected_conflicts": [],
+      "expected_confidence": null,
+      "expected_review_status": "rejected_document_pdf_invalid"
+    },
+    {
+      "id": "UNSUPPORTED_FILE",
+      "file": "unsupported.exe",
+      "media_type": "application/octet-stream",
+      "expected_extracted_values": {},
+      "expected_missing_fields": [],
+      "expected_conflicts": [],
+      "expected_confidence": null,
+      "expected_review_status": "rejected_document_file_type_unsupported"
+    }
+  ]
+}

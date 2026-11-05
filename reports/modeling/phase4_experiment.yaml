@@ -1,0 +1,37 @@
+spec_version: phase4-action13-logistic-v1
+status: proposed_not_approved_for_training
+readiness_review: reports/modeling/phase4_1_readiness_review.md
+owner_approval_required: true
+source: data/processed/hmda_precheck_typed_v1.csv
+target:
+  column: action_taken
+  positive_code: "1"
+  negative_code: "3"
+  label_name: historical_action_1_vs_3
+  excluded_codes: ["2", "4", "5", "6", "7", "8"]
+  interpretation: historical_hmda_outcome_only
+features:
+  proposed: [loan_type, loan_purpose, loan_amount, property_value, combined_loan_to_value_ratio, occupancy_type, income, debt_to_income_ratio]
+  excluded_from_features: [action_taken, interest_rate, rate_spread, derived_loan_product_type, derived_dwelling_category, lei, state_code, county_code, census_tract, derived_msa_md]
+  protected_data: excluded_from_operational_features_and_worker_inputs
+missing_value_policy:
+  special_codes: preserve_as_status_and_missing_indicator
+  invalid_values: preserve_as_status_and_missing_indicator
+  numeric_imputation: fit_on_training_partition_only_after_review
+  categorical_encoding: fit_on_training_partition_only_with_explicit_unknown_handling
+  debt_to_income_ratio_buckets: do_not_coerce_to_arbitrary_numeric_values
+split:
+  strategy: deterministic_institution_group_holdout
+  group_column: lei
+  seed: phase4-action13-v1
+  ratios: {train: 0.70, validation: 0.15, test: 0.15}
+  time_split: unavailable_all_rows_are_activity_year_2025
+baseline:
+  model: logistic_regression
+  trained_in_phase: false
+  solver: lbfgs
+  max_iter: 1000
+  class_weight: null
+  random_state: 2025
+  metrics: [class_prevalence, confusion_matrix, precision, recall, f1, roc_auc, pr_auc]
+  threshold: must_be_locked_before_evaluation

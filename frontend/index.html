@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mortgage Pre-Check AI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand-block">
+          <span class="brand-mark" aria-hidden="true">MP</span>
+          <div>
+            <p class="eyebrow">Research console</p>
+            <p class="brand-name">Mortgage Pre-Check AI</p>
+          </div>
+        </div>
+        <nav class="nav-list">
+          <button class="nav-item active" type="button" aria-current="page">Overview</button>
+          <button class="nav-item" type="button" disabled>Applications / Cases</button>
+          <button class="nav-item" type="button" disabled>Run Explorer</button>
+          <button class="nav-item" type="button" disabled>Human Review</button>
+          <button class="nav-item" type="button" disabled>Evaluations</button>
+          <button class="nav-item" type="button" disabled>Audit Log</button>
+        </nav>
+        <div class="sidebar-note">
+          <span class="status-dot neutral" aria-hidden="true"></span>
+          <div>
+            <strong id="backend-mode">Local deterministic mode</strong>
+            <span id="backend-model">No paid model calls</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Phase 2 foundation</p>
+            <h1>Pipeline overview</h1>
+          </div>
+          <div class="topbar-meta">
+            <span class="tag synthetic">SYNTHETIC</span>
+            <span id="model-mode" class="tag neutral-tag">DETERMINISTIC MODE</span>
+          </div>
+        </header>
+
+        <section class="page-intro" aria-labelledby="page-title">
+          <div>
+            <h2 id="page-title">Evidence before conclusions</h2>
+            <p>Submit permitted application details and inspect the actual worker outputs, configured policy status, fairness result, explanation, and audit trail.</p>
+          </div>
+          <span class="tag neutral-tag">USER SUBMISSION</span>
+        </section>
+
+        <section class="panel input-panel" aria-labelledby="input-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Dynamic backend input</p>
+              <h3 id="input-title">Submit applicant details</h3>
+            </div>
+            <span class="tag synthetic">SYNTHETIC ONLY</span>
+          </div>
+          <p class="muted-copy input-note">Complete the structured application, then optionally upload synthetic supporting evidence. Uploaded documents are validated and extracted first, shown for correction, and only then sent through the four bounded workers. Names, government identifiers, protected characteristics, and free-form sensitive notes are intentionally not collected.</p>
+          <form id="run-form" class="run-form">
+            <div class="form-grid">
+              <label>Applicant type<span class="field-help">Non-sensitive application structure</span><select name="applicant_type" required><option value="individual" selected>Individual</option><option value="joint">Joint</option></select></label>
+              <label class="checkbox-label"><span>Co-applicant</span><span class="checkbox-row"><input id="co-applicant-present" name="co_applicant_present" type="checkbox" /> Present</span><span class="field-help">Select for a joint application</span></label>
+              <label>Requested loan amount (USD)<input name="loan_amount" type="number" min="1" step="0.01" value="250000" required /></label>
+              <label>Loan purpose<select name="loan_purpose" required><option value="purchase" selected>Purchase</option><option value="refinance">Refinance</option><option value="home_improvement">Home improvement</option><option value="other">Other</option></select></label>
+              <label>Loan type<select name="loan_type" required><option value="conventional" selected>Conventional</option><option value="fha">FHA</option><option value="va">VA</option><option value="usda">USDA</option></select></label>
+              <label>Annual income (USD)<input name="annual_income" type="number" min="1" step="0.01" value="60000" required /></label>
+              <label>Income type<select name="income_type" required><option value="employment" selected>Employment</option><option value="self_employment">Self-employment</option><option value="retirement">Retirement</option><option value="other">Other</option></select></label>
+              <label>Monthly debt obligations (USD)<input name="monthly_debt_obligations" type="number" min="0" step="0.01" value="1900" required /><span class="field-help">Recurring obligations before this application</span></label>
+              <label>Debt-to-income ratio (%)<input name="debt_to_income_ratio" type="number" min="0" max="100" step="0.01" value="38" required /></label>
+              <label>Property value (USD)<input name="property_value" type="number" min="1" step="0.01" value="300000" required /></label>
+              <label>Property type<select name="property_type" required><option value="single_family" selected>Single family</option><option value="condominium">Condominium</option><option value="townhouse">Townhouse</option><option value="multi_unit">Multi-unit</option></select></label>
+              <label>Property units<input name="property_units" type="number" min="1" step="1" value="1" required /></label>
+              <label>Occupancy<select name="occupancy_type" required><option value="primary_residence" selected>Primary residence</option><option value="second_home">Second home</option><option value="investment">Investment</option></select></label>
+              <label id="co-applicant-income-field" hidden>Co-applicant annual income (USD)<input name="co_applicant_annual_income" type="number" min="0" step="0.01" /><span class="field-help">Optional if the co-applicant has no included income</span></label>
+              <label id="co-applicant-income-type-field" hidden>Co-applicant income type<select name="co_applicant_income_type"><option value="">Select if applicable</option><option value="employment">Employment</option><option value="self_employment">Self-employment</option><option value="retirement">Retirement</option><option value="other">Other</option></select></label>
+              <label class="full-width">Synthetic document text fallback<textarea name="supporting_document" rows="2">Synthetic employment verification letter</textarea><span class="small-meta">Used only when no file is selected; this preserves deterministic synthetic mode.</span></label>
+              <label class="full-width">Supporting document upload<input id="supporting-document-file" name="supporting_document_file" type="file" accept=".txt,.md,.csv,.json,.pdf" /><span id="upload-status" class="small-meta">TXT, MD, CSV, JSON, or PDF; maximum 2 MB. Use synthetic fixtures for testing.</span></label>
+            </div>
+            <div class="form-actions">
+              <button id="submit-run" class="primary-button" type="submit">Submit and run pre-check</button>
+              <span class="small-meta">Research pre-check only; never a final approval or denial.</span>
+            </div>
+          </form>
+          <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Human review step</p>
+                <h3 id="review-title">Review extracted values</h3>
+              </div>
+              <span class="tag neutral-tag">CORRECTION REQUIRED</span>
+            </div>
+            <p class="muted-copy">These values came from the form and deterministic document extraction. Correct them before running the LangGraph pre-check. The document text itself is not shown in audit output.</p>
+            <div class="form-grid">
+              <label>Reviewed loan amount<input id="review-loan-amount" type="number" min="0" step="0.01" required /></label>
+              <label>Reviewed annual income<input id="review-annual-income" type="number" min="0" step="0.01" required /></label>
+              <label>Reviewed property value<input id="review-property-value" type="number" min="0" step="0.01" /></label>
+              <label>Reviewed monthly debt<input id="review-monthly-debt" type="number" min="0" step="0.01" /></label>
+              <label>Reviewed loan type<input id="review-loan-type" required /></label>
+              <label>Reviewed debt-to-income ratio<input id="review-dti" required /></label>
+            </div>
+            <div class="evidence-block">
+              <span class="metric-label">Document-extracted facts</span>
+              <p id="review-extracted-facts" class="muted-copy">—</p>
+            </div>
+            <div id="review-findings" class="evidence-block"></div>
+            <button id="run-reviewed" class="primary-button" type="button">Confirm reviewed values and run pre-check</button>
+          </section>
+        </section>
+
+        <div id="error-state" class="inline-state error-state" role="alert" hidden></div>
+
+        <section class="status-strip" aria-label="Current pipeline status">
+          <div class="status-lead">
+            <span id="status-indicator" class="status-indicator neutral">Awaiting run</span>
+            <p id="status-detail">No backend run loaded yet.</p>
+          </div>
+          <div class="run-meta">
+            <span>Case <strong id="case-id">—</strong></span>
+            <span>Run <strong id="run-id">—</strong></span>
+            <span id="last-updated">No timestamp</span>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Run summary">
+          <article class="metric-card">
+            <span class="metric-label">Recommendation</span>
+            <strong id="recommendation" class="metric-value">—</strong>
+            <span class="metric-note">Non-final pre-check output</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Policy check</span>
+            <strong id="policy-contract-status" class="metric-value">—</strong>
+            <span id="policy-contract-reason" class="metric-note">—</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Human review</span>
+            <strong id="human-review" class="metric-value">—</strong>
+            <span class="metric-note">Required when policy or fairness needs review</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Fairness review</span>
+            <strong id="fairness-status" class="metric-value">—</strong>
+            <span class="metric-note">Protected fields remain isolated</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Audit events</span>
+            <strong id="audit-count" class="metric-value">—</strong>
+            <span class="metric-note">Structured events from backend</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Gate status</span>
+            <strong id="gate-status" class="metric-value">—</strong>
+            <span class="metric-note">Locked evaluation not run</span>
+          </article>
+        </section>
+
+        <div id="empty-state" class="empty-state">
+          <h3>No run loaded</h3>
+          <p>Submit the structured application above to populate the complete four-worker response from the real backend.</p>
+        </div>
+
+        <div id="results" hidden>
+          <section class="content-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Execution trace</p>
+                  <h3>Worker timeline</h3>
+                </div>
+                <span class="small-meta">Actual backend state</span>
+              </div>
+              <ol id="worker-list" class="worker-list"></ol>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Evidence</p>
+                  <h3>Decision narrative</h3>
+                </div>
+                <span class="tag synthetic">SYNTHETIC</span>
+              </div>
+              <p id="narrative" class="narrative">—</p>
+              <div class="evidence-block">
+                <span class="metric-label">Fairness limitation</span>
+                <p id="fairness-concern" class="muted-copy">—</p>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Evidence rule IDs</span>
+                <p id="evidence-rule-ids" class="muted-copy">—</p>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Provenance</span>
+                <p class="muted-copy">Submitted case · deterministic workers · no paid LLM calls</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="detail-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Worker output</p>
+                  <h3>Extraction summary</h3>
+                </div>
+                <span id="extraction-valid" class="small-meta">—</span>
+              </div>
+              <div id="extraction-summary" class="key-value-grid"></div>
+              <div class="evidence-block">
+                <span class="metric-label">Missing fields</span>
+                <p id="extraction-missing" class="muted-copy">—</p>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Warnings and preserved special codes</span>
+                <p id="extraction-warnings" class="muted-copy">—</p>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Extracted facts and provenance</span>
+                <div id="extracted-facts" class="key-value-grid"></div>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Validation findings</span>
+                <p id="validation-findings" class="muted-copy">—</p>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Missing evidence</span>
+                <p id="missing-evidence" class="muted-copy">—</p>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Worker output</p>
+                  <h3>Policy checks</h3>
+                </div>
+                <span class="small-meta">Configured rules only</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th scope="col">Rule</th><th scope="col">Status</th><th scope="col">Evidence</th></tr></thead>
+                  <tbody id="policy-table"></tbody>
+                </table>
+              </div>
+              <div class="evidence-block">
+                <span class="metric-label">Policy missing fields</span>
+                <p id="policy-missing" class="muted-copy">—</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="panel fairness-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Protected-data boundary</p>
+                <h3>Fairness-check output</h3>
+              </div>
+              <span id="protected-data-seen" class="small-meta">—</span>
+            </div>
+            <div class="fairness-grid">
+              <div><span class="metric-label">Status</span><strong id="fairness-detail-status">—</strong></div>
+              <div><span class="metric-label">Inspected rule IDs</span><p id="fairness-rule-ids" class="muted-copy">—</p></div>
+              <div><span class="metric-label">Concerns</span><p id="fairness-detail-concerns" class="muted-copy">—</p></div>
+            </div>
+          </section>
+
+          <section class="panel audit-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Traceability</p>
+                <h3>Audit events</h3>
+              </div>
+              <span class="small-meta">Sensitive fields omitted</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Node</th>
+                    <th scope="col">Event</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Attempt</th>
+                    <th scope="col">Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

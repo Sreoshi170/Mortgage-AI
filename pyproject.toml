@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mortgage-precheck"
+version = "0.1.0"
+description = "Bounded LangGraph foundation for a mortgage pre-check research prototype"
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph>=0.2,<2",
+  "pydantic>=2,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+api = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pypdf>=5,<7"]
+all = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pypdf>=5,<7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.setuptools.packages.find]
+include = ["mortgage_precheck*", "backend*", "frontend*"]

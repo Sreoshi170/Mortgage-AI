@@ -1,0 +1,139 @@
+manifest_version: "0.1-draft"
+status: "profiled_not_approved"
+dataset:
+  name: "hmda_precheck_typed_v1"
+  path: "data/processed/hmda_precheck_typed_v1.csv"
+  sha256: "F088D3E171C6D3402BF67658B34EF48909E1876066453AC1A9B6AF1DF32932E6"
+  size_bytes: 2314177410
+  row_count: 13558306
+  column_count: 24
+  activity_year: 2025
+  version_basis: "Filename and contents indicate v1/2025; no authoritative dataset version registry was found."
+source:
+  declared_source: null
+  observed_alignment:
+    - "Processed column names are a subset of fields present in data/raw/2025_lar.txt and data/raw/2025_public_lar_csv.csv."
+    - "Representative processed values, including extreme values, are also present in the available raw HMDA extracts."
+  exact_source_file: "unverified"
+  download_date: null
+  source_documentation: null
+schema:
+  columns:
+    - name: activity_year
+      observed_type: integer
+      role: time/code
+    - name: lei
+      observed_type: string
+      role: institution_identifier
+    - name: state_code
+      observed_type: categorical_string
+      role: geography
+    - name: county_code
+      observed_type: categorical_string
+      role: geography
+    - name: conforming_loan_limit
+      observed_type: categorical_string
+      role: loan_attribute
+    - name: derived_loan_product_type
+      observed_type: categorical_string
+      role: derived_loan_attribute
+    - name: derived_dwelling_category
+      observed_type: categorical_string
+      role: derived_property_attribute
+    - name: action_taken
+      observed_type: categorical_code
+      role: candidate_outcome
+      confirmed_target: false
+    - name: loan_type
+      observed_type: categorical_code
+      role: loan_attribute
+    - name: loan_purpose
+      observed_type: categorical_code
+      role: loan_attribute
+    - name: loan_amount
+      observed_type: numeric_like_string
+      role: financial_attribute
+    - name: combined_loan_to_value_ratio
+      observed_type: numeric_like_string_with_special_codes
+      role: financial_attribute
+    - name: interest_rate
+      observed_type: numeric_like_string_with_special_codes
+      role: pricing_attribute
+    - name: rate_spread
+      observed_type: numeric_like_string_with_special_codes
+      role: pricing_attribute
+    - name: property_value
+      observed_type: numeric_like_string_with_special_codes
+      role: financial_attribute
+    - name: occupancy_type
+      observed_type: categorical_code
+      role: loan_attribute
+    - name: income
+      observed_type: numeric_like_string
+      role: financial_attribute
+    - name: debt_to_income_ratio
+      observed_type: ordinal_or_categorical_string
+      role: financial_attribute
+    - name: loan_amount_numeric
+      observed_type: numeric
+      role: derived_numeric_companion
+    - name: combined_loan_to_value_ratio_numeric
+      observed_type: numeric_with_blank_missing
+      role: derived_numeric_companion
+    - name: interest_rate_numeric
+      observed_type: numeric_with_blank_missing
+      role: derived_numeric_companion
+    - name: rate_spread_numeric
+      observed_type: numeric_with_blank_missing
+      role: derived_numeric_companion
+    - name: property_value_numeric
+      observed_type: numeric_with_blank_missing
+      role: derived_numeric_companion
+    - name: income_numeric
+      observed_type: numeric
+      role: derived_numeric_companion
+preprocessing:
+  verified_observations:
+    - "Six numeric companion columns are present."
+    - "Parseable numeric values in the companion columns match their source-like columns."
+    - "Source-like fields retain literal NA and Exempt values where present."
+    - "Numeric companions use blank strings where source-like fields contain NA or Exempt."
+    - "No row filtering, mutation, or normalization was performed during this inspection."
+  unverified_history:
+    - "Exact source row selection and filtering"
+    - "Column mapping and type-conversion code"
+    - "Treatment of duplicates, outliers, missing values, and special codes"
+    - "Units and event-time/as-of semantics"
+  limitations:
+    - "No preprocessing script or metadata was found in the repository."
+quality:
+  row_width_errors: 0
+  duplicate_rows_after_first: 165974
+  duplicate_detection: "BLAKE2b-64 fingerprint of parsed field sequence"
+  missingness_highlights:
+    rate_spread: 0.5034
+    debt_to_income_ratio: 0.3563
+    combined_loan_to_value_ratio: 0.3481
+    income: 0.1615
+  suspicious_values:
+    loan_amount_max: 999000005000
+    combined_loan_to_value_ratio_max: 1401111800.0
+    property_value_max: 2147483647.0
+    income_negative_rows: 8091
+  categorical_scan: "No observed values outside the scan vocabularies; meanings remain unverified."
+protected_attributes:
+  present_in_processed: false
+  raw_source_contains_demographics: true
+  evaluation_only_path: "data/evaluation_only/"
+  worker_visibility: "Must remain excluded until an enforced sanitized schema exists."
+target:
+  candidate_column: action_taken
+  confirmed: false
+  reason: "Outcome-like name and complete eight-code distribution, but no task contract or field dictionary confirms intended label semantics."
+limitations:
+  - "No case/application identifier or row-level provenance key"
+  - "No verified unit metadata"
+  - "No verified as-of timing"
+  - "No demographic evaluation extract in the repository"
+  - "Historical outcomes must not be treated as objective creditworthiness"
+  - "Dataset is not approved as suitable for mortgage pre-check"

@@ -1,0 +1,211 @@
+{
+  "chunks": 1,
+  "columns": [
+    "activity_year",
+    "lei",
+    "state_code",
+    "county_code",
+    "conforming_loan_limit",
+    "derived_loan_product_type",
+    "derived_dwelling_category",
+    "action_taken",
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "combined_loan_to_value_ratio",
+    "interest_rate",
+    "rate_spread",
+    "property_value",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio",
+    "loan_amount_numeric",
+    "combined_loan_to_value_ratio_numeric",
+    "interest_rate_numeric",
+    "rate_spread_numeric",
+    "property_value_numeric",
+    "income_numeric"
+  ],
+  "delimiter": ",",
+  "empty_input": false,
+  "excluded_leakage_or_post_outcome_fields": [
+    "action_taken",
+    "denial_reason_1",
+    "denial_reason_2",
+    "denial_reason_3",
+    "denial_reason_4",
+    "derived_dwelling_category",
+    "derived_loan_product_type",
+    "interest_rate",
+    "rate_spread"
+  ],
+  "excluded_protected_or_proxy_fields": [
+    "ageapplicant",
+    "applicant_age",
+    "applicant_ethnicity_1",
+    "applicant_race_1",
+    "applicant_sex",
+    "census_tract",
+    "co_applicant_age",
+    "co_applicant_ethnicity_1",
+    "co_applicant_race_1",
+    "co_applicant_sex",
+    "county_code",
+    "derived_ethnicity",
+    "derived_msa_md",
+    "derived_race",
+    "derived_sex",
+    "lei",
+    "state_code"
+  ],
+  "field_quality": {
+    "combined_loan_to_value_ratio": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.134
+      },
+      "rows": 1000,
+      "special": 134,
+      "special_values": {
+        "NA": 134
+      }
+    },
+    "debt_to_income_ratio": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.496
+      },
+      "rows": 1000,
+      "special": 496,
+      "special_values": {
+        "20%-<30%": 101,
+        "30%-<36%": 136,
+        "50%-60%": 66,
+        "<20%": 34,
+        ">60%": 24,
+        "NA": 135
+      }
+    },
+    "income": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.0
+      },
+      "rows": 1000,
+      "special": 0,
+      "special_values": {}
+    },
+    "interest_rate": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.144
+      },
+      "rows": 1000,
+      "special": 144,
+      "special_values": {
+        "NA": 144
+      }
+    },
+    "loan_amount": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.0
+      },
+      "rows": 1000,
+      "special": 0,
+      "special_values": {}
+    },
+    "property_value": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.132
+      },
+      "rows": 1000,
+      "special": 132,
+      "special_values": {
+        "NA": 132
+      }
+    },
+    "rate_spread": {
+      "invalid": 0,
+      "missing": 0,
+      "out_of_range": 0,
+      "rates": {
+        "invalid": 0.0,
+        "missing": 0.0,
+        "out_of_range": 0.0,
+        "special": 0.147
+      },
+      "rows": 1000,
+      "special": 147,
+      "special_values": {
+        "NA": 147
+      }
+    }
+  },
+  "input_path": "data\\processed\\hmda_precheck_typed_v1.csv",
+  "notes": [
+    "Source values are never overwritten or normalized in place.",
+    "Income is preserved in the HMDA-reported unit: thousands of dollars; no conversion is applied.",
+    "action_taken is preserved as an eight-code candidate outcome and is excluded from operational features.",
+    "Reported combined_loan_to_value_ratio is preserved; no loan_amount/property_value ratio is substituted.",
+    "Rows with invalid width raise RowWidthError rather than being silently dropped."
+  ],
+  "operational_feature_allowlist": [
+    "activity_year",
+    "loan_type",
+    "loan_purpose",
+    "loan_amount",
+    "property_value",
+    "combined_loan_to_value_ratio",
+    "occupancy_type",
+    "income",
+    "debt_to_income_ratio"
+  ],
+  "required_columns": [
+    "action_taken",
+    "activity_year",
+    "combined_loan_to_value_ratio",
+    "debt_to_income_ratio",
+    "income",
+    "interest_rate",
+    "loan_amount",
+    "loan_purpose",
+    "loan_type",
+    "occupancy_type",
+    "property_value",
+    "rate_spread"
+  ],
+  "row_width_errors": 0,
+  "rows_inspected": 1000
+}
